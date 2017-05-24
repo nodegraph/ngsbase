@@ -1,0 +1,376 @@
+# Setting up config.toml file which should live in the gitlab_ci multi runner dir beside the multi runner binary. This is usually automatically created but needs to be manually adjusted.
+# Make sure to the location of bash (installed as part of git) to the SYSTEM level paths not user level. Otherwise the runner doesn't seem to find bash.
+#shell = "bash"
+
+
+
+# Note you need to make sure adb server is not running on CI build machines 
+# at the beginning of these runs, because adb will lock on build dirs.
+# To kill adb just issue the command: adb kill-server
+# The after_script runs it so in most cases you won't need to do this.
+# Only when the build does not finish will adb be left locking dirs.
+
+# Test values for the following variables are supplied by the gitlab
+# secure project variables.
+# ANDROID_DEVICE_ID 
+# PASSWORD
+
+# Disable caching by instructing to cache a bogus file.
+#cache:
+#  paths:
+#  - .gitignore
+
+#after_script:
+#    # adb will lock on dirs holding the app
+#    # we need to kill it otherwise the next build job won't be able to delete the dir when syncing to a clean repo.
+#    # - /d/installs/android/android-sdk/platform-tools/adb kill-server
+#    - if [ -f /d/installs/android/android-sdk/platform-tools/adb ] ; then /d/installs/android/android-sdk/platform-tools/adb kill-server; fi
+#
+#.windows_debug: &windows_debug_tmpt
+#  script:
+#    - echo "WINDOWS DEBUG"
+#    - export ARCH=ARCH_WINDOWS
+#    - export ARCH_BITS=x64
+#    - source ./src/scripts/msys2/setup_env.sh
+#    - rm -fr windows_debug
+#    - mkdir windows_debug
+#    - cd windows_debug
+#    - cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=Debug ../src
+#    - cmake --build . --target install
+#    - cmake --build . --target pack_desktop 
+#  tags:
+#    - ngsrunner
+#.windows_release: &windows_release_tmpt
+#  script:
+#    - echo "WINDOW RELEASE"
+#    - export ARCH=ARCH_WINDOWS
+#    - export ARCH_BITS=x64
+#    - source ./src/scripts/msys2/setup_env.sh
+#    - rm -fr windows_release
+#    - mkdir windows_release
+#    - cd windows_release
+#    - cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=Release ../src
+#    - cmake --build . --target install
+#    - cmake --build . --target pack_desktop 
+#  tags:
+#    - ngsrunner
+#.macos_debug: &macos_debug_tmpt
+#  script:
+#    - echo "MACOS DEBUG"
+#    - export ARCH=ARCH_MACOS
+#    - export ARCH_BITS=x64
+#    - source ./src/scripts/macos/setup_env.sh
+#    - rm -fr macos_debug
+#    - mkdir macos_debug
+#    - cd macos_debug
+#    - cmake -G "Eclipse CDT4 - Unix Makefiles" -DARCH=ARCH_MACOS -DCMAKE_BUILD_TYPE=Debug ../src
+#    - make install -j8
+#    - make install_desktop -j8
+#  tags:
+#    - macngsrunner
+#.macos_release: &macos_release_tmpt
+#  script:
+#    - echo "MACOS RELEASE"
+#    - export ARCH=ARCH_MACOS
+#    - export ARCH_BITS=x64
+#    - source ./src/scripts/macos/setup_env.sh
+#    - rm -fr macos_release
+#    - mkdir macos_release
+#    - cd macos_release
+#    - cmake -G "Eclipse CDT4 - Unix Makefiles" -DARCH=ARCH_MACOS -DCMAKE_BUILD_TYPE=Release ../src
+#    - make install -j8
+#    - make install_desktop -j8
+#  tags:
+#    - macngsrunner
+#.ios_debug: &ios_debug_tmpt
+#  script:
+#    - echo "IOS DEBUG"
+#    - export ARCH=ARCH_IOS
+#    - export ARCH_SIM=device
+#    - rm -fr ios_debug
+#    - mkdir ios_debug
+#    - cd ios_debug
+#    - cmake -G "Eclipse CDT4 - Unix Makefiles" -DARCH=ARCH_IOS -DARCH_SIM=device -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../src/toolchain_ios.cmake ../src
+#    - make install -j8
+#  tags:
+#    - macngsrunner
+#.ios_release: &ios_release_tmpt
+#  script:
+#    - echo "IOS RELEASE"
+#    - export ARCH=ARCH_IOS
+#    - export ARCH_SIM=device
+#    - rm -fr ios_release
+#    - mkdir ios_release
+#    - cd ios_release
+#    - cmake -G "Eclipse CDT4 - Unix Makefiles" -DARCH=ARCH_IOS -DARCH_SIM=device -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../src/toolchain_ios.cmake ../src
+#    - make install -j8
+#  tags:
+#    - macngsrunner
+#
+#.winrt_debug: &winrt_debug_tmpt
+#  script:
+#    - echo "WINRT DEBUG"
+#    - export ARCH=ARCH_WINRT
+#    - export ARCH_BITS=x64
+#    - source ./src/scripts/msys2/setup_env.sh
+#    - rm -fr winrt_debug
+#    - mkdir winrt_debug
+#    - cd winrt_debug
+#    - cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../src/toolchain_winrt.cmake ../src
+#    - cmake --build . --target install
+#    - cmake --build . --target install_octoplier
+#    - cmake --build . --target install_testqml
+#    - cmake --build . --target pack_octoplier
+#    - cmake --build . --target pack_testqml
+#    # skip running apps
+#    #- cmake --build . --target run_octoplier
+#    #- cmake --build . --target run_testqml
+#    - cmake --build . --target unregister_octoplier
+#    - cmake --build . --target unregister_testqml
+#  tags:
+#    - ngsrunner
+#.winrt_release: &winrt_release_tmpt
+#  script:
+#    - echo "WINRT RELEASE"
+#    - export ARCH=ARCH_WINRT
+#    - export ARCH_BITS=x64
+#    - source ./src/scripts/msys2/setup_env.sh
+#    - rm -fr winrt_release
+#    - mkdir winrt_release
+#    - cd winrt_release
+#    - cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../src/toolchain_winrt.cmake ../src
+#    - cmake --build . --target install
+#    - cmake --build . --target install_octoplier
+#    - cmake --build . --target install_testqml
+#    - cmake --build . --target pack_octoplier
+#    - cmake --build . --target pack_testqml
+#    # skip running apps
+#    #- cmake --build . --target run_octoplier
+#    #- cmake --build . --target run_testqml
+#    - cmake --build . --target unregister_octoplier
+#    - cmake --build . --target unregister_testqml
+#  tags:
+#    - ngsrunner
+#.winrt_x86_debug: &winrt_x86_debug_tmpt
+#  script:
+#    - echo "WINRT X86 DEBUG"
+#    - export ARCH=ARCH_WINRT
+#    - export ARCH_BITS=x86
+#    - source ./src/scripts/msys2/setup_env.sh
+#    - rm -fr winrt_x86_debug
+#    - mkdir winrt_x86_debug
+#    - cd winrt_x86_debug
+#    - cmake -G "Visual Studio 14 2015" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../src/toolchain_winrt.cmake ../src
+#    - cmake --build . --target install
+#    - cmake --build . --target install_octoplier
+#    - cmake --build . --target install_testqml
+#    - cmake --build . --target pack_octoplier
+#    - cmake --build . --target pack_testqml
+#    #- cmake --build . --target run_octoplier
+#    #- cmake --build . --target run_testqml
+#    #- cmake --build . --target unregister_octoplier
+#    #- cmake --build . --target unregister_testqml
+#  tags:
+#    - ngsrunner
+#.winrt_x86_release: &winrt_x86_release_tmpt
+#  script:
+#    - echo "WINRT X86 RELEASE"
+#    - export ARCH=ARCH_WINRT
+#    - export ARCH_BITS=x86
+#    - source ./src/scripts/msys2/setup_env.sh
+#    - rm -fr winrt_x86_release
+#    - mkdir winrt_x86_release
+#    - cd winrt_x86_release
+#    - cmake -G "Visual Studio 14 2015" -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../src/toolchain_winrt.cmake ../src
+#    - cmake --build . --target install
+#    - cmake --build . --target install_octoplier
+#    - cmake --build . --target install_testqml
+#    - cmake --build . --target pack_octoplier
+#    - cmake --build . --target pack_testqml
+#    #- cmake --build . --target run_octoplier
+#    #- cmake --build . --target run_testqml
+#    #- cmake --build . --target unregister_octoplier
+#    #- cmake --build . --target unregister_testqml
+#  tags:
+#    - ngsrunner
+#.android_debug: &android_debug_tmpt
+#  script:
+#    - echo "ANDROID DEBUG"
+#    - export ARCH=ARCH_ANDROID
+#    - export ARCH_BITS=x64
+#    - source ./src/scripts/msys2/setup_env.sh
+#    - rm -fr android_debug
+#    - mkdir android_debug
+#    - cd android_debug
+#    - cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../src/toolchain_android.cmake ../src
+#    - ninja install
+#    - ninja install_octoplier
+#    - ninja install_testqml
+#    # skip running these on the device
+#    #- ninja run_octoplier
+#    #- ninja run_testqml
+#  tags:
+#    - ngsrunner
+#.android_release: &android_release_tmpt
+#  script:
+#    - echo "ANDROID RELEASE"
+#    - export ARCH=ARCH_ANDROID
+#    - export ARCH_BITS=x64
+#    - source ./src/scripts/msys2/setup_env.sh
+#    - rm -fr android_release
+#    - mkdir android_release
+#    - cd android_release
+#    - cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../src/toolchain_android.cmake ../src
+#    - ninja install
+#    - ninja install_octoplier
+#    - ninja install_testqml
+#    # skip running these on the device
+#    #- ninja run_octoplier
+#    #- ninja run_testqml
+#  tags:
+#    - ngsrunner
+
+
+
+## ------------------------------------
+#windows_debug:
+#    <<: *windows_debug_tmpt
+#    except:
+#        - tags
+#windows_debug_tag:
+#    <<: *windows_debug_tmpt
+#    only:
+#        - tags
+#    artifacts:
+#        paths:
+#            - windows_debug/install/
+#windows_release:
+#    <<: *windows_release_tmpt
+#    except:
+#        - tags
+#windows_release_tag:
+#    <<: *windows_release_tmpt
+#    only:
+#        - tags
+#    artifacts:
+#        paths:
+#            - windows_release/install
+## ------------------------------------
+#macos_debug:
+#    <<: *macos_debug_tmpt
+#    except:
+#        - tags
+#macos_debug_tag:
+#    <<: *macos_debug_tmpt
+#    only:
+#        - tags
+#    artifacts:
+#        paths:
+#            - mac_debug/build/octoplier_pimped.dmg
+#            - mac_debug/build/testqml_pimped.dmg
+#macos_release:
+#    <<: *macos_release_tmpt
+#    except:
+#        - tags
+#macos_release_tag:
+#    <<: *macos_release_tmpt
+#    only:
+#        - tags
+#    artifacts:
+#        paths:
+#            - mac_debug/build/octoplier_pimped.dmg
+#            - mac_debug/build/testqml_pimped.dmg
+## ------------------------------------
+#ios_debug:
+#    <<: *ios_debug_tmpt
+#    except:
+#        - tags
+#ios_debug_tag:
+#    <<: *ios_debug_tmpt
+#    only:
+#        - tags
+#    artifacts:
+#        paths:
+#            - ios_debug/build/
+#ios_release:
+#    <<: *ios_release_tmpt
+#    except:
+#        - tags
+#ios_release_tag:
+#    <<: *ios_release_tmpt
+#    only:
+#        - tags
+#    artifacts:
+#        paths:
+#            - ios_debug/build/
+## ------------------------------------
+#winrt_debug:
+#    <<: *winrt_debug_tmpt
+#    except:
+#        - tags
+#winrt_debug_tag:
+#    <<: *winrt_debug_tmpt
+#    only:
+#        - tags
+#    artifacts:
+#        paths:
+#            - winrt_debug/install_octoplier/octoplier.appx
+#winrt_release:
+#    <<: *winrt_release_tmpt
+#    except:
+#        - tags
+#winrt_release_tag:
+#    <<: *winrt_release_tmpt
+#    only:
+#        - tags
+#    artifacts:
+#        paths:
+#            - winrt_release/install_octoplier/octoplier.appx
+## ------------------------------------
+#winrt_x86_debug:
+#    <<: *winrt_x86_debug_tmpt
+#    except:
+#        - tags
+#winrt_x86_debug_tag:
+#    <<: *winrt_x86_debug_tmpt
+#    only:
+#        - tags
+#    artifacts:
+#        paths:
+#            - winrt_x86_debug/install_octoplier/octoplier.appx
+#winrt_x86_release:
+#    <<: *winrt_x86_release_tmpt
+#    except:
+#        - tags
+#winrt_x86_release_tag:
+#    <<: *winrt_x86_release_tmpt
+#    only:
+#        - tags
+#    artifacts:
+#        paths:
+#            - winrt_x86_release/install_octoplier/octoplier.appx
+## ------------------------------------
+#android_debug:
+#    <<: *android_debug_tmpt
+#    except:
+#        - tags
+#android_debug_tag:
+#    <<: *android_debug_tmpt
+#    only:
+#        - tags
+#    artifacts:
+#        paths:
+#            - android_debug/install_octoplier/bin/QtApp-debug.apk
+#android_release:
+#    <<: *android_release_tmpt
+#    except:
+#        - tags
+#android_release_tag:
+#    <<: *android_release_tmpt
+#    only:
+#        - tags
+#    artifacts:
+#        paths:
+#            - android_release/install_octoplier/bin/QtApp-release-signed.apk
+## ------------------------------------
+
