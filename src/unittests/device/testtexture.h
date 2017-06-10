@@ -14,11 +14,12 @@ Then it is read back and we check packed chunks equality operator.
 
 class Texture;
 class PackedTexture;
+class TexturedQuadPipeline;
 
-class TestTexture2 {
+class TestTexture {
  public:
-	TestTexture2(ElementID element_id, bool normalized_access);
-  virtual ~TestTexture2();
+	TestTexture(ElementID element_id, bool normalized_access);
+  virtual ~TestTexture();
 
  private:
   void create_packed_texture();
@@ -33,6 +34,8 @@ class TestTexture2 {
   PackedTexture* _packed_texture;
   Texture* _texture;
   PackedTexture* _read_back_packed_texture;
+
+  TexturedQuadPipeline* _pipeline;
 };
 
 }

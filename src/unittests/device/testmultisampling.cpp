@@ -8,10 +8,7 @@
 #include <base/device/transforms/glmhelper.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-// Shaders.
-#include <base/resources/dataheaders/unittestshaders.h>
-
-// Packed buffers.
+// Packed.
 #include <base/device/packedbuffers/packedtexture.h>
 #include <base/device/packedbuffers/packeduniformbuffer.h>
 
@@ -33,6 +30,9 @@
 #include <iostream>
 #include <vector>
 
+namespace {
+#include <unittests/device/unittestshaders.h>
+}
 
 /*
 
@@ -44,8 +44,10 @@
 
 
 
- Note that the fragment shader is evaluated only once at o=(0.5,0.5) despite the multiple samples.
- So sometimes o is actually outside the polygon and texture coordinate will be out of bounds and will wrap.
+ Note that the fragment shader is evaluated only once at o=(0.5,0.5).
+ This value is then copied to the samples which in the pixel which overlap the polygon.
+ If o is outside the polygon, then you may get artifacts like the texture coordinate will be out of bounds and will wrap.
+ In order to avoid this you force the shader evaluation point use a sample which lies inside the polygon.
 
  The way that multi-sampling works in opengl is that the fragment color is evaluated once and gets copied
  to the sample locations which overlapped the polygon. (Note implementation wise the hardware may not
@@ -54,13 +56,13 @@
  Note also that in OpengGL 4.0 and glsl 4.0 it is possible to evaluate the fragment shader at all the multi-samples.
 
  test4 ------------------------------------
- d
+ d                      x
  test3 ------------------------------------
- c
+ c          x
  test2 -------------o----------------------
- b
+ b                           x
  test1 ------------------------------------
- a
+ a               x
  test0 ------------------------------------
 
  The input bar texture is (0,0,0,0) in the bottom half and (1,1,1,1) in the top half.
@@ -105,7 +107,7 @@
 
  Test4: shift(0,1)
  Quad covers: none
- Background covers: a,b,c
+ Background covers: a,b,c,d
  color: a=b=c=d=(0.1,0.1,0.1,0.1)
  so color=(a+b+c+d)/4=(0.1,0.1,0.1,0.1)
  */

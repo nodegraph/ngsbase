@@ -2,7 +2,7 @@ set(sources
     main.cpp
     testmemory.cpp
     testrenderoutputs.cpp
-    testtexture2.cpp
+    testtexture.cpp
     testmultisampling.cpp
     testasyncquery.cpp
     testgeometryshader.cpp
@@ -11,7 +11,7 @@ set(sources
 set(headers
     testmemory.h
     testrenderoutputs.h
-    testtexture2.h
+    testtexture.h
     testmultisampling.h
     testasyncquery.h
     testgeometryshader.h
@@ -25,7 +25,7 @@ else()
 endif()
 
 
-target_link_libraries(testdevice ngs_resources ngs_game)
+target_link_libraries(testdevice ngs_device ngs_game)
 
 # Link libraries.
 if (${ARCH} STREQUAL ARCH_LINUX)

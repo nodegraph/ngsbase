@@ -8,9 +8,6 @@
 #include <base/device/asyncquery.h>
 
 // Shaders.
-#include <base/resources/dataheaders/unittestshaders.h>
-
-// Program.
 #include <base/device/program/program.h>
 #include <base/device/program/fragdatainfo.h>
 #include <base/device/program/fragdatainfos.h>
@@ -31,6 +28,10 @@
 
 
 #include <iostream>
+
+namespace {
+#include <unittests/device/unittestshaders.h>
+}
 
 namespace ngs {
 
@@ -58,7 +59,7 @@ void TestAsyncQuery::setup_pipeline() {
   std::string vertex_shader = es3_model_view_project_vert;
   std::string fragment_shader = es3_floating_texture_value_frag;
 
-  // Pipeline. Any fragment shader will because we're just testing occlusion queries.
+  // Pipeline. Any fragment shader will do because we're just testing occlusion queries.
   _program = new_ff Program(vertex_shader,fragment_shader, "");
 
   // Setup the uniform matrices.

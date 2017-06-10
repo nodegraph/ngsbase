@@ -1,34 +1,25 @@
 #pragma once
 #include <base/device/device_export.h>
 #include <base/device/geometry/shapebuffers.h>
-#include <base/device/geometry/vertices.h>
-
 #include <base/device/unpackedbuffers/vertexarray.h>
 
 namespace ngs {
 
-class DefaultUniformInfo;
-class Resources;
-
-class Quad;
-class Triangle;
-class Circle;
-
-struct PosTexVertex;
-struct ShapeVertex;
-
 class Program;
+class Texture;
 
-class DEVICE_EXPORT QuadPipeline {
+class DEVICE_EXPORT TexturedQuadPipeline {
  public:
 
-  static const glm::vec4 kClearColor;
+  static const glm::vec4 kTint;
 
-  QuadPipeline();
-  ~QuadPipeline();
+  TexturedQuadPipeline();
+  ~TexturedQuadPipeline();
 
-  // Uniforms.
-  void set_mvp(const glm::mat4& m);
+  // Configure.
+  void set_texture(Texture* tex);
+  void set_tint(const glm::vec4& color);
+  void set_mvp(const glm::mat4& mvp);
 
   // Draw.
   void draw();
@@ -37,9 +28,6 @@ class DEVICE_EXPORT QuadPipeline {
   // Initialization.
   void create_program();
   void configure_vertex_arrays();
-
-  // Our uniform infos.
-  const DefaultUniformInfo* _mvp_uniform;
 
   // Our program.
   Program* _program;
@@ -50,9 +38,6 @@ class DEVICE_EXPORT QuadPipeline {
   // Our geometry.
   QuadVBO _quad_vbo;
   QuadIBO _quad_ibo;
-
-  // Our instances.
-  VertexBuffer _inst_vbo;
 };
 
 

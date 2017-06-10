@@ -4,10 +4,9 @@
 #include <base/device/program/program.h>
 #include <base/device/program/defaultuniforminfos.h>
 #include <base/device/program/attributeinfos.h>
-#include <base/resources/resources.h>
 
 namespace {
-#include <base/resources/dataheaders/displayshaders_gles3.h>
+#include <base/device/pipelines/shaders/shapeshaders_gles3.h>
 }
 
 #if ARCH == ARCH_ANDROID
@@ -79,8 +78,8 @@ void ShapePipeline::create_program() {
 #else
   version = "#version 300 es\n";
 #endif
-  std::string vs = version+std::string(monitor_poly_vert_gles3);
-  std::string fs = version+std::string(monitor_poly_frag_gles3);
+  std::string vs = version+std::string(shape_vert_gles3);
+  std::string fs = version+std::string(shape_frag_gles3);
 
   // Create our program.
   _program = new_ff Program(vs, fs, "");

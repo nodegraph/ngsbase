@@ -12,6 +12,7 @@ class GAMEEXPORT_EXPORT Game {
 
   // Game Loop.
   virtual void run();
+  virtual void swap_buffers();
 
  protected:
   // Quit run loop.
@@ -38,8 +39,22 @@ class GAMEEXPORT_EXPORT Game {
   // SDL Objects.
   SDL_Window* _window;
   SDL_GLContext _context;
+};
 
-
+class GAMEEXPORT_EXPORT UnitTestGame: public Game {
+ public:
+  static UnitTestGame* get_instance() {
+    if (!_singleton) {
+      _singleton = new UnitTestGame();
+    }
+    return _singleton;
+  }
+  ~UnitTestGame() {}
+  void (*test)();
+  virtual void render() { test(); _quit = true;}
+ private:
+  static UnitTestGame* _singleton;
+  UnitTestGame(): Game(512, 512), test(NULL) {}
 };
 
 }

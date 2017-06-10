@@ -2,7 +2,8 @@
 
 namespace ngs {
 
-class QuadPipeline;
+class Game;
+class ColoredQuadPipeline;
 class RenderBuffer;
 
 class TestMemory {
@@ -20,7 +21,7 @@ class TestMemory {
   static const int _height = 1024;//512;
   static const int _min_gpu_mem = 300000;  // This is in kbytes.
 
-  QuadPipeline* _pipeline;
+  ColoredQuadPipeline* _pipeline;
 };
 
 }

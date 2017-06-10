@@ -7,9 +7,6 @@
 #include <base/device/transforms/glmhelper.h>
 
 // Shaders.
-#include <base/resources/dataheaders/unittestshaders.h>
-
-// Program.
 #include <base/device/program/program.h>
 #include <base/device/program/fragdatainfos.h>
 #include <base/device/program/attributeinfos.h>
@@ -24,11 +21,16 @@
 // Packed.
 #include <base/device/packedbuffers/packeduniformbuffer.h>
 
+
 // GLM matrix utilities.
 #include <glm/gtc/matrix_transform.hpp>
 
 // STL.
 #include <iostream>
+
+namespace {
+#include <unittests/device/unittestshaders.h>
+}
 
 namespace ngs {
 

@@ -23,7 +23,8 @@ set(packedbuffers_cpp
     )
 
 set(pipelines_cpp
-	pipelines/quadpipeline.cpp
+	pipelines/coloredquadpipeline.cpp
+	pipelines/texturedquadpipeline.cpp
     pipelines/shapepipeline.cpp
     pipelines/textpipeline.cpp
     )
@@ -96,7 +97,8 @@ set(packedbuffers_h
     )
     
 set(pipelines_h
-	pipelines/quadpipeline.h
+	pipelines/coloredquadpipeline.h
+	pipelines/texturedquadpipeline.h
     pipelines/shapepipeline.h
     pipelines/textpipeline.h
     )

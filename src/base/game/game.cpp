@@ -10,6 +10,8 @@
 
 namespace ngs {
 
+UnitTestGame* UnitTestGame::_singleton = NULL;
+
 Game::Game(int width, int height)
     : _width(width),
       _height(height),
@@ -21,6 +23,11 @@ Game::Game(int width, int height)
 
 Game::~Game() {
   deinit();
+}
+
+void Game::swap_buffers() {
+  // Swap buffers.
+  SDL_GL_SwapWindow(_window);
 }
 
 void Game::deinit() {

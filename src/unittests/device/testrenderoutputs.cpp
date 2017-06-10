@@ -3,13 +3,9 @@
 
 // Device.
 #include <base/device/deviceheadersgl.h>
+#include <base/game/game.h>
 
 // Shaders.
-#include <base/resources/dataheaders/unittestshaders.h>
-
-
-
-// Packed buffers.
 #include <base/device/packedbuffers/packedtexture.h>
 #include <base/device/devicedebug.h>
 #include <base/device/transforms/glmhelper.h>
@@ -22,8 +18,6 @@
 
 // Packed buffers.
 #include <base/device/packedbuffers/packeduniformbuffer.h>
-
-// Program.
 #include <base/device/program/program.h>
 #include <base/device/program/fragdatainfos.h>
 #include <base/device/program/attributeinfos.h>
@@ -31,11 +25,9 @@
 #include <base/device/program/defaultuniforminfos.h>
 #include <base/device/program/fragdatainfo.h>
 
-
-
-#include <base/resources/resources.h>
 #include <base/utils/fileutil.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <unittests/device/unittestshaders.h>
 
 // Std headers.
 #include <iostream>
@@ -298,6 +290,10 @@ void TestRenderOutputs::run_pipeline() {
 
   // Unbind the fbo.
   _fbo.unbind();
+
+  // Draw again just to show the rendered output.
+  _quad_ibo.draw_indexed();
+  UnitTestGame::get_instance()->swap_buffers();
 }
 
 #endif

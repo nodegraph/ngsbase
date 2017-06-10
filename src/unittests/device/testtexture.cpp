@@ -1,13 +1,15 @@
-#include "testtexture2.h"
 #include <base/memoryallocator/taggednew.h>
 #include <base/device/deviceheadersgl.h>
 #include <base/device/devicedebug.h>
+#include <base/device/pipelines/texturedquadpipeline.h>
+#include <base/game/game.h>
 
 // Packed buffers.
 #include <base/device/packedbuffers/packedtexture.h>
 
 // Unpacked buffers.
 #include <base/device/unpackedbuffers/texture.h>
+#include <unittests/device/testtexture.h>
 
 // STL.
 #include <iostream>
@@ -22,22 +24,24 @@ using namespace ngs;
 #define kHeight 1201
 #define kNumChannels 4
 
-TestTexture2::TestTexture2(ElementID element_id, bool normalized_access)
+TestTexture::TestTexture(ElementID element_id, bool normalized_access)
     : _element_id(element_id),
       _normalized_access(normalized_access),
       _packed_texture(NULL),
       _texture(NULL),
-      _read_back_packed_texture(NULL) {
+      _read_back_packed_texture(NULL),
+      _pipeline(new_ff TexturedQuadPipeline()){
   create_packed_texture();
   create_texture();
   read_back_texture();
   check_read_back_texture();
 }
 
-TestTexture2::~TestTexture2() {
+TestTexture::~TestTexture() {
   delete_ff(_packed_texture);
   delete_ff(_texture);
   delete_ff(_read_back_packed_texture);
+  delete_ff(_pipeline);
 }
 
 namespace {
@@ -110,7 +114,7 @@ void fill_row_with_random<unsigned char>(char* raw) {
 }
 }
 
-void TestTexture2::create_packed_texture() {
+void TestTexture::create_packed_texture() {
 	// Create a packed texture with a horizontal bar in it.
 	_packed_texture = new_ff PackedTexture(_element_id);
 	_packed_texture->reallocate(kWidth, kHeight, 1, kNumChannels);
@@ -154,20 +158,26 @@ void TestTexture2::create_packed_texture() {
 	}
 }
 
-void TestTexture2::create_texture() {
+void TestTexture::create_texture() {
 	// Create our texture.
 	_texture = new_ff Texture(0, *_packed_texture, _normalized_access);
+
+	// Show the texture in the opengl window.
+	_pipeline->set_texture(_texture);
+	_pipeline->draw();
+	UnitTestGame::get_instance()->swap_buffers();
+
 	_texture->unbind(0);
 }
 
-void TestTexture2::read_back_texture()
+void TestTexture::read_back_texture()
 {
 	// Download the texture to a packed texture.
 	_texture->bind(0);
 	_read_back_packed_texture = _texture->create_packed_texture();
 }
 
-void TestTexture2::check_read_back_texture()
+void TestTexture::check_read_back_texture()
 {
   // We check the read back packed texture using
   // the packed texture's equality operator.

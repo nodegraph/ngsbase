@@ -2,6 +2,7 @@
 #include <base/device/deviceheadersgl.h>
 #include <base/device/devicedebug.h>
 #include <base/device/geometry/attributeformat.h>
+#include <base/device/pipelines/fonts/verabd_ttf.h>
 
 #include <base/utils/simplesaver.h>
 #include <base/utils/archdebug.h>
@@ -13,12 +14,10 @@
 //#include <base/device/geometry/distfieldtext.cpp>
 
 #include <base/device/pipelines/textpipeline.h>
-#include <base/resources/resources.h>
-#include <base/resources/textures/distance_map.h>
-#include <base/resources/dataheaders/verabd_ttf.h>
+#include <base/device/pipelines/textures/distance_map.h>
 
 namespace {
-  #include <base/resources/dataheaders/displayshaders_gles3.h>
+  #include <base/device/pipelines/shaders/textshaders_gles3.h>
 }
 
 #include <freetype-gl/texture-font.h>

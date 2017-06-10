@@ -1,15 +1,13 @@
-#include <base/device/pipelines/quadpipeline.h>
-
+#include <base/device/pipelines/coloredquadpipeline.h>
 #include <base/memoryallocator/taggednew.h>
 #include <base/memoryallocator/bootstrap.h>
 #include <base/glewhelper/glewhelper.h>
-#include <base/resources/resources.h>
 #include <base/game/game.h>
+#include <unittests/device/testtexture.h>
 
 
 // Tests.
 #include "testmemory.h"
-#include "testtexture2.h"
 #include "testrenderoutputs.h"
 #include "testmultisampling.h"
 #include "testasyncquery.h"
@@ -20,24 +18,24 @@
 
 using namespace ngs;
 
-void test_texture2_gles3_plus() {
+void test_texture_gles3_plus() {
   // Test pipeline with unnormalized texture values.
   // Note float,int, and unsigned int textures are always accessed unnormalized.
-  TestTexture2 test_texture1(FloatElement, false);
-  TestTexture2 test_texture2(HalfElement, false);
-  TestTexture2 test_texture3(IntElement, false);
-  TestTexture2 test_texture4(UIntElement, false);
-  TestTexture2 test_texture5(ShortElement, false);
-  TestTexture2 test_texture6(UShortElement, false);
-  TestTexture2 test_texture7(CharElement, false);
-  TestTexture2 test_texture8(UCharElement, false);
+  TestTexture test_texture1(FloatElement, false);
+  TestTexture test_texture2(HalfElement, false);
+  TestTexture test_texture3(IntElement, false);
+  TestTexture test_texture4(UIntElement, false);
+  TestTexture test_texture5(ShortElement, false);
+  TestTexture test_texture6(UShortElement, false);
+  TestTexture test_texture7(CharElement, false);
+  TestTexture test_texture8(UCharElement, false);
 
   // Test pipeline with normalized texture values.
   // Note float,int, and unsigned int textures are always accessed unnormalized.
-  TestTexture2 _test_texture1(FloatElement, true);
-  TestTexture2 _test_texture2(HalfElement, true);
-  TestTexture2 _test_texture3(IntElement, true);
-  TestTexture2 _test_texture4(UIntElement, true);
+  TestTexture _test_texture1(FloatElement, true);
+  TestTexture _test_texture2(HalfElement, true);
+  TestTexture _test_texture3(IntElement, true);
+  TestTexture _test_texture4(UIntElement, true);
   //TestTexture<short> _test_texture5(true); // FBOs are not required to support snorm textures.
   //TestTexture2 _test_texture6(UShortElement, true);
   //TestTexture<char> _test_texture7(true); // FBOs are not required to support snorm textures.
@@ -77,14 +75,14 @@ void test() {
 	// Bootstrap all the global objects.
   bootstrap_memory_tracker();
   {
-    std::cerr << "testing textures load/unload ...\n";
-    test_texture2_gles3_plus();
-
-    std::cerr << "testinging gpu memory ...\n";
-    TestMemory test_memory;
-
-    std::cerr << "testing gpu render outputs ...\n";
-    test_render_outputs_gles3_plus();
+//    std::cerr << "testing textures load/unload ...\n";
+//    test_texture_gles3_plus();
+//
+//    std::cerr << "testinging gpu memory ...\n";
+//    TestMemory test_memory;
+//
+//    std::cerr << "testing gpu render outputs ...\n";
+//    test_render_outputs_gles3_plus();
 
     std::cerr << "testing gpu multi-sampling ...\n";
     TestMultiSampling test_multi_sampling;
@@ -102,17 +100,11 @@ void test() {
   shutdown_memory_tracker();
 }
 
-class TestGame: public ngs::Game {
- public:
-  TestGame(): Game(512, 512) {}
-  ~TestGame() {}
-  virtual void render() { test(); _quit = true;}
-};
-
 
 int main(int argc, char **argv) {
-  TestGame g;
-  g.run();
+  UnitTestGame* game = UnitTestGame::get_instance();
+  game->test = test;
+  game->run();
   return 0;
 }
 

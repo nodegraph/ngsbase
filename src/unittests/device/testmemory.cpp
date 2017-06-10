@@ -2,14 +2,13 @@
 #include <base/memoryallocator/taggednew.h>
 #include <base/device/deviceheadersgl.h>
 #include <base/device/devicedebug.h>
+#include <base/device/pipelines/coloredquadpipeline.h>
+#include <base/game/game.h>
 
 // Unpacked.
 #include <base/device/unpackedbuffers/texture.h>
 #include <base/device/unpackedbuffers/renderbuffer.h>
 #include <base/device/unpackedbuffers/framebuffer.h>
-
-// Pipelines.
-#include <base/device/pipelines/quadpipeline.h>
 
 
 #include <iostream>
@@ -34,7 +33,7 @@ GLint get_available_mem() {
 namespace ngs {
 
 TestMemory::TestMemory():
-    _pipeline(new_ff QuadPipeline()) {
+    _pipeline(new_ff ColoredQuadPipeline()) {
   rundown_memory_with_depth_textures(100);
   rundown_memory_with_depth_rbos(100);
   rundown_memory_with_textures(100);
@@ -91,13 +90,20 @@ void TestMemory::rundown_memory_with_depth_textures(int num) {
     gpu(glClear(GL_COLOR_BUFFER_BIT));
 
     // Clear depth buffer.
+    //gpu(glClearDepthf((float)i/1000000.0f));
     gpu(glClearDepthf(1.0f));
-    gpu(glClearDepthf((float)i/1000000.0f));
+    gpu(glClear(GL_DEPTH_BUFFER_BIT));
 
     draw_quad();
 
     // Unbind the fbo.
     fbo->unbind();
+
+    // Draw the quad again without the fbo to display the color output.
+    draw_quad();
+
+    // Swap buffers.
+    UnitTestGame::get_instance()->swap_buffers();
 
 #if GLES_MAJOR_VERSION >= 100
     std::cerr << "DepthTexture #" << i << " Total KB: "<<get_total_mem()<<"  Available KB: "<<get_available_mem()<<"\n";
@@ -151,13 +157,20 @@ void TestMemory::rundown_memory_with_depth_rbos(int num) {
     gpu(glClear(GL_COLOR_BUFFER_BIT));
 
     // Clear depth buffer.
-    gpu(glClearDepthf((float)i/1000000.0f));
+    //gpu(glClearDepthf((float)i/1000000.0f));
+    gpu(glClearDepthf(1.0f));
     gpu(glClear(GL_DEPTH_BUFFER_BIT));
 
     draw_quad();
 
     // Unbind the fbo.
     fbo->unbind();
+
+    // Draw the quad again without the fbo to display the color output.
+    draw_quad();
+
+    // Swap buffers.
+    UnitTestGame::get_instance()->swap_buffers();
 
 #if GLES_MAJOR_VERSION >= 100
     std::cerr << "DepthRBO #" << i << " Total KB: "<<get_total_mem()<<"  Available KB: "<<get_available_mem()<<"\n";
@@ -200,12 +213,19 @@ void TestMemory::rundown_memory_with_textures(int num) {
     gpu(glClear(GL_COLOR_BUFFER_BIT));
 
     // Clear depth buffer.
-    gpu(glClearDepthf((float)i/1000000.0f));
+    //gpu(glClearDepthf((float)i/1000000.0f));
+    gpu(glClearDepthf(1.0f));
     gpu(glClear(GL_DEPTH_BUFFER_BIT));
 
     draw_quad();
 
     fbo->unbind();
+
+    // Draw the quad again without the fbo to display the color output.
+    draw_quad();
+
+    // Swap buffers.
+    UnitTestGame::get_instance()->swap_buffers();
 
 #if GLES_MAJOR_VERSION >= 100
     std::cerr << "Texture #" << i << " Total KB: "<<get_total_mem()<<"  Available KB: "<<get_available_mem()<<"\n";

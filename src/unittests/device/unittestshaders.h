@@ -1,7 +1,3 @@
-#include <base/resources/dataheaders/unittestshaders.h>
-
-namespace ngs {
-
 const char* es3_model_view_project_vert = "#version 330\n"
     "layout(std140) uniform Inputs\n"
     "{\n"
@@ -23,9 +19,6 @@ const char* es3_model_view_project_vert = "#version 330\n"
     "    gl_Position = model_view_projection*position;\n"
     "    attr_out.normal=normal;\n"
     "    attr_out.tex_coord=tex_coord;\n"
-    "    //gl_Position = gl_ModelVieProjectionMatrix*position;\n"
-    "    //gl_Position=gl_ModelViewProjectionMatrix*gl_vertex;\n"
-    "    //gl_Position=ftransform();\n"
     "}\n";
 
 const char* es3_floating_texture_value_frag = "#version 330\n"
@@ -51,30 +44,6 @@ const char* es3_floating_texture_value_frag = "#version 330\n"
     "    vec4 temp=texture(image_texture,attr_in.tex_coord).xyzw;\n"
     "    output_color=temp+tint_color;\n"
     "}\n";
-
-//const char* es3_floating_texture_value_frag = "#version 330\n"
-//    "// Uniforms\n"
-//    "layout(std140) uniform Inputs\n"
-//    "{\n"
-//    "    mat4 model_view;\n"
-//    "    mat4 projection;\n"
-//    "    mat4 model_view_projection;\n"
-//    "    uniform vec4 tint_color;\n"
-//    "};\n"
-//    "uniform sampler2D image_texture;\n"
-//    "// Outputs\n"
-//    "layout(location=0) out vec4 output_color;\n"
-//    "// Inputs\n"
-//    "in VertexAttributes\n"
-//    "{\n"
-//    "    smooth vec3 normal;\n"
-//    "    smooth vec2 tex_coord;\n"
-//    "} attr_in;\n"
-//    "void main()\n"
-//    "{\n"
-//    "    vec4 temp=texture(image_texture,attr_in.tex_coord).xyzw;\n"
-//    "    output_color=temp+tint_color;\n"
-//    "}\n";
 
 const char* es3_int_texture_value_frag = "#version 330\n"
     "layout(std140) uniform Inputs\n"
@@ -211,9 +180,6 @@ const char* es3_centroid_model_view_project_vert = "#version 330\n"
 "    gl_Position = model_view_projection*position;\n"
 "    attr_out.normal=normal;\n"
 "    attr_out.tex_coord=tex_coord;\n"
-"    //gl_Position = gl_ModelVieProjectionMatrix*position;\n"
-"    //gl_Position=gl_ModelViewProjectionMatrix*gl_vertex; \n"
-"    //gl_Position=ftransform();\n"
 "}\n";
 
 const char* es3_centroid_multisampling_frag = "#version 330\n"
@@ -257,7 +223,4 @@ const char* es3_centroid_multisampling_frag = "#version 330\n"
     "    }\n"
     "    */\n"
     "}\n";
-
-}
-
 
