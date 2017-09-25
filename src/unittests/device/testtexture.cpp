@@ -2,7 +2,6 @@
 #include <base/device/deviceheadersgl.h>
 #include <base/device/devicedebug.h>
 #include <base/device/pipelines/texturedquadpipeline.h>
-#include <base/game/game.h>
 
 // Packed buffers.
 #include <base/device/packedbuffers/packedtexture.h>
@@ -24,9 +23,10 @@ using namespace ngs;
 #define kHeight 1201
 #define kNumChannels 4
 
-TestTexture::TestTexture(ElementID element_id, bool normalized_access)
+TestTexture::TestTexture(ElementID element_id, bool normalized_access, std::function<void()> swap)
     : _element_id(element_id),
       _normalized_access(normalized_access),
+      _swap(swap),
       _packed_texture(NULL),
       _texture(NULL),
       _read_back_packed_texture(NULL),
@@ -165,9 +165,10 @@ void TestTexture::create_texture() {
 	// Show the texture in the opengl window.
 	_pipeline->set_texture(_texture);
 	_pipeline->draw();
-	UnitTestGame::get_instance()->swap_buffers();
-
 	_texture->unbind(0);
+
+	// Swap.
+	_swap();
 }
 
 void TestTexture::read_back_texture()

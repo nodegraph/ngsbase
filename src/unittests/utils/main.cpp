@@ -3,7 +3,6 @@
 #include <base/utils/simplesaver.h>
 #include <base/utils/simpleloader.h>
 #include <base/utils/signal.h>
-#include <base/utils/crypto.h>
 
 #include <base/memoryallocator/taggednew.h>
 #include <base/memoryallocator/bootstrap.h>
@@ -33,7 +32,7 @@ void test_simple_serialization_binary();
 // signals
 void test_signals();
 
-void test_crypto();
+//void test_crypto();
 
 }
 
@@ -61,7 +60,7 @@ int main(int argc, char **argv) {
     test_signals();
 
     // crypto.
-    test_crypto();
+    //test_crypto();
   }
   shutdown_memory_tracker();
 
@@ -162,7 +161,7 @@ void test_replace_by_regex() {
 
 void test_simple_serialization_binary() {
 
-  std::string filename = get_env("SRC_ROOT")+"/serializationtest.bin";
+  std::string filename = "c:/tmp/ngs_serialization_test.bin";
 
   // --------------------------------------------------------------------------
   // Test writing to binary file.
@@ -299,12 +298,12 @@ void test_signals() {
   }
 }
 
-void test_crypto() {
-  Crypto::test_hashed_password("this_is_a_Password!!#@$");
-  Crypto::test_private_key("this_is_a_Password!!#@$");
-  std::string test(10000, 'a');
-  Crypto::test_encrypt_decrypt(test);
-}
+//void test_crypto() {
+//  Crypto::test_hashed_password("this_is_a_Password!!#@$");
+//  Crypto::test_private_key("this_is_a_Password!!#@$");
+//  std::string test(10000, 'a');
+//  Crypto::test_encrypt_decrypt(test);
+//}
 
 }
 

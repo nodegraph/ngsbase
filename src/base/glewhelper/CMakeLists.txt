@@ -50,7 +50,7 @@ INSTALL(TARGETS ngs_glewhelper
 # Install Debug GLEW.
 INSTALL(
   FILES
-      "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/glew-1.13.0/bin/Debug MX/x64/glew32mxd.dll"
+      "${DEPS_DIR}/glew-1.13.0/bin/Debug MX/x64/glew32mxd.dll"
   DESTINATION bin
   COMPONENT thirdparty
   CONFIGURATIONS Debug
@@ -59,25 +59,7 @@ INSTALL(
 # Install Release GLEW.
 INSTALL(
   FILES
-      "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/glew-1.13.0/bin/Release MX/x64/glew32mx.dll"
-  DESTINATION bin
-  COMPONENT thirdparty
-  CONFIGURATIONS Release
-)
-
-# Install Debug SDL2.
-INSTALL(
-  FILES
-      "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/sdl2-2.0.5/lib/debug/SDL2.dll"
-  DESTINATION bin
-  COMPONENT thirdparty
-  CONFIGURATIONS Debug
-)
-
-# Install Release SDL2.
-INSTALL(
-  FILES
-      "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/sdl2-2.0.5/lib/release/SDL2.dll"
+      "${DEPS_DIR}/glew-1.13.0/bin/Release MX/x64/glew32mx.dll"
   DESTINATION bin
   COMPONENT thirdparty
   CONFIGURATIONS Release

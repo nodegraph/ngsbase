@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 namespace ngs {
 
 class Game;
@@ -8,7 +10,7 @@ class RenderBuffer;
 
 class TestMemory {
  public:
-  TestMemory();
+  TestMemory(std::function<void()> swap);
   virtual ~TestMemory();
 
   void draw_quad();
@@ -17,6 +19,8 @@ class TestMemory {
   void rundown_memory_with_depth_rbos(int num);
   void rundown_memory_with_textures(int num);
  private:
+  std::function<void()> _swap;
+
   static const int _width = 1024;//512;
   static const int _height = 1024;//512;
   static const int _min_gpu_mem = 300000;  // This is in kbytes.

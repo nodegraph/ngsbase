@@ -5,6 +5,8 @@
 
 #include <base/device/transforms/glmhelper.h>
 
+#include <functional>
+
 namespace ngs {
 
 /*
@@ -18,7 +20,7 @@ class TexturedQuadPipeline;
 
 class TestTexture {
  public:
-	TestTexture(ElementID element_id, bool normalized_access);
+	TestTexture(ElementID element_id, bool normalized_access, std::function<void()> swap);
   virtual ~TestTexture();
 
  private:
@@ -26,6 +28,8 @@ class TestTexture {
   void create_texture();
   void read_back_texture();
   void check_read_back_texture();
+
+  std::function<void()> _swap;
 
   // Determine whether we'll be testing with textures which yield normalized values or not.
   bool _normalized_access;

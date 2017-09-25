@@ -33,3 +33,26 @@ if (NOT (${ARCH} STREQUAL ARCH_MACOS))
 	  )
 endif()
 
+# --------------------------------------------------------------------
+
+# Install Debug GLFW3.
+INSTALL(
+  FILES
+      "${UNPACKS_DIR}/glfw-3.2.1.bin.WIN64/lib-vc2015/glfw3.dll"
+  DESTINATION bin
+  COMPONENT thirdparty
+  CONFIGURATIONS Debug
+)
+
+# Install Release GLFW3.
+INSTALL(
+  FILES
+      "${UNPACKS_DIR}/glfw-3.2.1.bin.WIN64/lib-vc2015/glfw3.dll"
+  DESTINATION bin
+  COMPONENT thirdparty
+  CONFIGURATIONS Release
+)
+
+
+
+

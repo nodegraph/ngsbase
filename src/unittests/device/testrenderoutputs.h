@@ -6,6 +6,8 @@
 #include <base/device/unpackedbuffers/renderbuffer.h>
 #include <base/device/unpackedbuffers/framebuffer.h>
 
+#include <functional>
+
 namespace ngs {
 
 /*
@@ -42,7 +44,7 @@ class BlockUniformInfo;
 
 class TestRenderOutputs {
  public:
-  TestRenderOutputs(ElementID element_id, bool normalized_access);
+  TestRenderOutputs(ElementID element_id, bool normalized_access, std::function<void()> swap);
   virtual ~TestRenderOutputs();
 
  private:
@@ -56,6 +58,8 @@ class TestRenderOutputs {
   void setup_pipeline();
   void setup_fbo();
   void run_pipeline();
+
+  std::function<void()> _swap;
 
   // Determine whether we'll be testing with textures which yield normalized values or not.
   bool _normalized_access;

@@ -3,7 +3,6 @@
 #include <base/device/deviceheadersgl.h>
 #include <base/device/devicedebug.h>
 #include <base/device/pipelines/coloredquadpipeline.h>
-#include <base/game/game.h>
 
 // Unpacked.
 #include <base/device/unpackedbuffers/texture.h>
@@ -32,7 +31,8 @@ GLint get_available_mem() {
 
 namespace ngs {
 
-TestMemory::TestMemory():
+TestMemory::TestMemory(std::function<void()> swap):
+    _swap(swap),
     _pipeline(new_ff ColoredQuadPipeline()) {
   rundown_memory_with_depth_textures(100);
   rundown_memory_with_depth_rbos(100);
@@ -103,7 +103,7 @@ void TestMemory::rundown_memory_with_depth_textures(int num) {
     draw_quad();
 
     // Swap buffers.
-    UnitTestGame::get_instance()->swap_buffers();
+    _swap();
 
 #if GLES_MAJOR_VERSION >= 100
     std::cerr << "DepthTexture #" << i << " Total KB: "<<get_total_mem()<<"  Available KB: "<<get_available_mem()<<"\n";
@@ -170,7 +170,7 @@ void TestMemory::rundown_memory_with_depth_rbos(int num) {
     draw_quad();
 
     // Swap buffers.
-    UnitTestGame::get_instance()->swap_buffers();
+    _swap();
 
 #if GLES_MAJOR_VERSION >= 100
     std::cerr << "DepthRBO #" << i << " Total KB: "<<get_total_mem()<<"  Available KB: "<<get_available_mem()<<"\n";
@@ -225,7 +225,7 @@ void TestMemory::rundown_memory_with_textures(int num) {
     draw_quad();
 
     // Swap buffers.
-    UnitTestGame::get_instance()->swap_buffers();
+    _swap();
 
 #if GLES_MAJOR_VERSION >= 100
     std::cerr << "Texture #" << i << " Total KB: "<<get_total_mem()<<"  Available KB: "<<get_available_mem()<<"\n";

@@ -19,18 +19,6 @@ add_definitions("-DGLES_MINOR_VERSION=${gles_minor_version}")
 
 
 # ---------------------------------------------------------
-# Custom Directories.
-# ---------------------------------------------------------
-
-set(FREETYPE_DIR "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/freetype-2.5.2")
-set(GLEW_DIR "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/glew-1.13.0")
-set(GLM_DIR "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/glm-0.9.5.4")
-set(FREETYPE_GL_DIR "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/freetype-gl")
-set(LIBSODIUM_DIR "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/libsodium-1.0.10")
-set(OPENSSL_DIR "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/openssl-1.0.2h_x64_${build_type}")
-set(SDL2_DIR "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/sdl2-2.0.5")
-
-# ---------------------------------------------------------
 # Our build setup for windows.
 # ---------------------------------------------------------
 
@@ -58,22 +46,7 @@ set(CMAKE_C_FLAGS_RELEASE   "/MD /Ob2 /O2 /MP /wd4251 /wd4351")
 # Add glew defines.
 add_definitions("-DGLEW_MX")
 
-# Setup up our cpp flags.
-include_directories("${FREETYPE_DIR}/include")
-include_directories("${GLEW_DIR}/include")
-include_directories("${GLM_DIR}")
-include_directories("${FREETYPE_GL_DIR}/include")
-include_directories("${LIBSODIUM_DIR}/include")
-include_directories("${OPENSSL_DIR}/include")
-include_directories("${SDL2_DIR}/include")
-
-# Setup up our link flags.
-link_directories("${FREETYPE_DIR}/lib/win64")
-link_directories("${FREETYPE_GL_DIR}/lib/win64")
-link_directories("${LIBSODIUM_DIR}/x64/${CMAKE_BUILD_TYPE}/v140/dynamic")
-link_directories("${OPENSSL_DIR}/lib")
-link_directories("${SDL2_DIR}/lib/${build_type}")
-
-link_directories("${GLEW_DIR}/lib/Debug MX/x64")
-link_directories("${GLEW_DIR}/lib/Release MX/x64")
+set(GLFW_DIR "${UNPACKS_DIR}/glfw-3.2.1.bin.WIN64")
+include_directories("${UNPACKS_DIR}/glfw-3.2.1.bin.WIN64/include")
+link_directories("${UNPACKS_DIR}/glfw-3.2.1.bin.WIN64/lib-vc2015")
 

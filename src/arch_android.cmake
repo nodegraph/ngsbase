@@ -47,8 +47,6 @@ set(QT5_DIR "D:/installs/android/Qt5.8.0/5.8/android_armv7")
 set(FREETYPE_DIR "${PLATFORM_ROOT}/srcdeps/ngsexternal/android/freetype-2.5.2")
 set(GLM_DIR "${PLATFORM_ROOT}/srcdeps/ngsexternal/android/glm-0.9.5.4")
 set(FREETYPE_GL_DIR "${PLATFORM_ROOT}/srcdeps/ngsexternal/android/freetype-gl")
-set(LIBSODIUM_DIR "${PLATFORM_ROOT}/srcdeps/ngsexternal/android/libsodium-1.0.10/libsodium-android-armv7-a")
-set(OPENSSL_DIR "${PLATFORM_ROOT}/srcdeps/ngsexternal/android/openssl-1.0.2h")
 
 # Global Properties.
 SET_PROPERTY(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS TRUE)
@@ -59,8 +57,6 @@ include_directories("${ANDROID_TOOLCHAIN_ROOT}/system/usr/include")
 include_directories("${FREETYPE_DIR}/include")
 include_directories("${FREETYPE_GL_DIR}/include")
 include_directories("${GLM_DIR}")
-include_directories("${LIBSODIUM_DIR}/include")
-include_directories("${OPENSSL_DIR}/include")
 
 # Setup up our link flags.
 link_directories("${QT5_DIR}/lib")
@@ -69,6 +65,4 @@ link_directories("${ANDROID_TOOLCHAIN_ROOT}/system/usr/lib}") # this is where we
 link_directories("${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a") # this is where we find libgnustl_shared.so
 link_directories("${FREETYPE_DIR}/lib")
 link_directories("${FREETYPE_GL_DIR}/lib")
-link_directories("${LIBSODIUM_DIR}/lib")
-link_directories("${OPENSSL_DIR}/armeabi-v7a")
 

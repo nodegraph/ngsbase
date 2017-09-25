@@ -3,7 +3,6 @@
 
 // Device.
 #include <base/device/deviceheadersgl.h>
-#include <base/game/game.h>
 
 // Shaders.
 #include <base/device/packedbuffers/packedtexture.h>
@@ -37,9 +36,10 @@ namespace ngs {
 
 #if GLES_MAJOR_VERSION >= 3
 
-TestRenderOutputs::TestRenderOutputs(ElementID element_id, bool normalized_access)
+TestRenderOutputs::TestRenderOutputs(ElementID element_id, bool normalized_access, std::function<void()> swap)
     : _element_id(element_id),
       _normalized_access(normalized_access),
+      _swap(swap),
       _quad_vbo(glm::vec3(0, 0, -100), glm::vec3(512, 512, -100)),
       _quad_ibo(),
       _rbo(GL_DEPTH32F_STENCIL8, 512, 512),
@@ -293,7 +293,9 @@ void TestRenderOutputs::run_pipeline() {
 
   // Draw again just to show the rendered output.
   _quad_ibo.draw_indexed();
-  UnitTestGame::get_instance()->swap_buffers();
+
+  // Swap.
+  _swap();
 }
 
 #endif

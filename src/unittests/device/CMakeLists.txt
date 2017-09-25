@@ -25,13 +25,11 @@ else()
 endif()
 
 
-target_link_libraries(testdevice ngs_device ngs_game)
-
 # Link libraries.
 if (${ARCH} STREQUAL ARCH_LINUX)
-	target_link_libraries(testdevice pthread)
+	target_link_libraries(testdevice pthread )
 elseif (${ARCH} STREQUAL ARCH_WINDOWS) 
-	target_link_libraries(testdevice)
+	target_link_libraries(testdevice glfw3dll ngs_device)
 elseif (${ARCH} STREQUAL ARCH_WINRT)
 	target_link_libraries(testdevice)
 elseif (${ARCH} STREQUAL DESKTOP_ANDROID)

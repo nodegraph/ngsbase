@@ -1,19 +1,20 @@
-# OPEN NODE GRAPH
-cmake_minimum_required (VERSION 2.8.10)
+# Node Graph Software
+# Variables which can be adjusted by the user from the CMake gui interface will be in all caps.
+# Other variables will be in lower case.
+
+cmake_minimum_required (VERSION 3.9.3)
 
 project (ngs)
 include (GenerateExportHeader)
 
 # Grab some variables from our environment.
-# Switch backslashes to forward slashes in SRC_ROOT.
+# Backslashes in windows env vars can be convert to forward slashes as follows.
+# string(REPLACE "\\" "/" TEST $ENV{TEST})
 
-string(REPLACE "\\" "/" SRC_ROOT $ENV{SRC_ROOT})
-string(REPLACE "\\" "/" PLATFORM_ROOT $ENV{PLATFORM_ROOT})
-message("SRC_ROOT is: ${SRC_ROOT}")
-message("PLATFORM_ROOT is: ${PLATFORM_ROOT}")
-
-set(PASSWORD $ENV{PASSWORD})
-set(ARCH_BITS $ENV{ARCH_BITS})
+# Our arch is windows by default.
+# When a toolchain file is used, that file will set the ARCH.
+set(ARCH "ARCH_WINDOWS" CACHE STRING "ARCH_LINUX, ARCH_WINDOWS, ARCH_WINRT, ARCH_ANDROID, ARCH_MACOS, ARCH_IOS, ARCH_WASM")
+message("building for ${ARCH}")
 
 # The INSTALL command won't keep the directory structure.
 # So we use this hack  
@@ -38,6 +39,7 @@ set(karch_winrt 2)
 set(karch_android 3)
 set(karch_macos 4)
 set(karch_ios 5)
+set(karch_wasm 6)
 
 # Architecture Defines.
 add_definitions("-DARCH_LINUX=${karch_linux}")
@@ -46,6 +48,7 @@ add_definitions("-DARCH_WINRT=${karch_winrt}")
 add_definitions("-DARCH_ANDROID=${karch_android}")
 add_definitions("-DARCH_MACOS=${karch_macos}")
 add_definitions("-DARCH_IOS=${karch_ios}")
+add_definitions("-DARCH_WASM=${karch_wasm}")
 
 # Force Qt's scene graph rendering to happen in the main thread.
 # add_definitions("-DQSG_RENDER_LOOP=basic")
@@ -76,10 +79,7 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	SET(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "the install prefix" FORCE)
 endif()
 
-# By default the ARCH is set to windows.
-# When using a cmake toolchain file, that file will set the ARCH.
-set(ARCH "ARCH_WINDOWS" CACHE STRING "ARCH_LINUX, ARCH_WINDOWS, ARCH_WINRT, ARCH_ANDROID, ARCH_MACOS, ARCH_IOS")
-message("building for ${ARCH}")
+
 
 #set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/build CACHE PATH "Library output path")
 #set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/build CACHE PATH "Executable output path")
@@ -129,6 +129,9 @@ set(tsconfig_json "tsconfig.json")
 # ---------------------------------------------------------
 set(closure_compiler_jar "${PLATFORM_ROOT}/srcdeps/ngsexternal/closure_compiler/closure-compiler-v20170218.jar")
 
+# Our platform specific deps dir.
+# This is the location of the ngsdeps projects which holds all our third party dependencies.
+set(DEPS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../ngsdeps CACHE STRING "")
 
 
 # Load the architecture specific cmake file.
@@ -136,8 +139,12 @@ if (${ARCH} STREQUAL ARCH_LINUX)
 	add_definitions("-DARCH=${karch_linux}")
 	include("./arch_linux.cmake")	
 elseif (${ARCH} STREQUAL ARCH_WINDOWS)
-	add_definitions("-DARCH=${karch_windows}")
+	set(DEPS_DIR ${DEPS_DIR}/vs2015)
+	set(UNPACKS_DIR "e:/unpacks")
+	set(INSTALLS_DIR "e:/installs")
+	
 	include("./arch_windows.cmake")
+	add_definitions("-DARCH=${karch_windows}")
 elseif (${ARCH} STREQUAL ARCH_WINRT)
 	add_definitions("-DARCH=${karch_winrt}")
 	include("./arch_winrt.cmake")
@@ -153,6 +160,11 @@ elseif (${ARCH} STREQUAL ARCH_IOS)
 else ()
 	message("error: unknown architecture specified")
 endif ()
+
+message("DEPS_DIR: ${DEPS_DIR}")
+
+include("./dependencies.cmake")
+
 
 # Create the node graph version header file.
 configure_file (

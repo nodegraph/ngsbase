@@ -4,7 +4,6 @@
 set(sources
 	bits.cpp
     blockarray.cpp
-    crypto.cpp
     drawutil.cpp
     envutil.cpp
     fileutil.cpp
@@ -20,7 +19,6 @@ set(sources
 set(headers
 	bits.h
 	blockarray.h
-	crypto.h
 	drawutil.h
 	envutil.h
     signal.h
@@ -44,11 +42,11 @@ generate_export_header(ngs_utils EXPORT_MACRO_NAME UTILS_EXPORT EXPORT_FILE_NAME
 target_link_libraries(ngs_utils ngs_memoryallocator)
 
 if (${ARCH} STREQUAL ARCH_WINDOWS)
-	target_link_libraries(ngs_utils libsodium)
+	target_link_libraries(ngs_utils)
 elseif (${ARCH} STREQUAL ARCH_MACOS)
-	target_link_libraries(ngs_utils sodium)
+	target_link_libraries(ngs_utils)
 elseif (${ARCH} STREQUAL ARCH_ANDROID)
-    target_link_libraries(ngs_utils sodium)
+    target_link_libraries(ngs_utils)
 endif ()
 
 # Install.
@@ -60,24 +58,6 @@ INSTALL(TARGETS ngs_utils
   BUNDLE DESTINATION .
 )
 
-# --------------------------------------------------------------------
 
-# Install Debug LibSodium.
-INSTALL(
-  FILES
-      "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/libsodium-1.0.10/x64/Debug/v140/dynamic/libsodium.dll"
-  DESTINATION bin
-  COMPONENT thirdparty
-  CONFIGURATIONS Debug
-)
-
-# Install Release LibSodium.
-INSTALL(
-  FILES
-      "${PLATFORM_ROOT}/srcdeps/ngsexternal/vs2015/libsodium-1.0.10/x64/Release/v140/dynamic/libsodium.dll"
-  DESTINATION bin
-  COMPONENT thirdparty
-  CONFIGURATIONS Release
-)
 
 
